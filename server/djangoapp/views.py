@@ -101,7 +101,7 @@ def get_dealer_details(request, dealer_id):
                 return JsonResponse({"status": 200, "dealer": dealership})
             else:
                 return JsonResponse({
-                    "status": response.status_code, 
+                    "status": response.status_code,
                     "message": "Failed to fetch dealer details"
                 })
         except requests.exceptions.RequestException as e:
