@@ -159,3 +159,26 @@ def add_review(request):
             return JsonResponse({"status":401,"message":"Error in posting review"})
     else:
         return JsonResponse({"status":403,"message":"Unauthorized"})
+
+# def add_review(request):
+#     if request.user.is_authenticated:  # Check if user is authenticated
+#         try:
+#             data = json.loads(request.body)
+
+#             # Validate required fields
+#             required_fields = ["name", "dealership", "review", "purchase", "purchase_date", "car_make", "car_model", "car_year"]
+#             for field in required_fields:
+#                 if field not in data:
+#                     return JsonResponse({"status": 400, "message": f"Missing field: {field}"})
+
+#             # Assuming post_review is a function to handle review posting logic
+#             response = post_review(data)
+
+#             return JsonResponse({"status": 200, "message": "Review posted successfully"})
+#         except json.JSONDecodeError:
+#             return JsonResponse({"status": 400, "message": "Invalid JSON"})
+#         except Exception as e:
+#             print(f"Error in posting review: {e}")  # Log the error
+#             return JsonResponse({"status": 500, "message": "Error in posting review"})
+#     else:
+#         return JsonResponse({"status": 403, "message": "Unauthorized"})
