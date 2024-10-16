@@ -100,18 +100,16 @@ def get_dealer_details(request, dealer_id):
                 dealership = response.json()
                 return JsonResponse({"status": 200, "dealer": dealership})
             else:
-                return JsonResponse(
-                    {"status": response.status_code, 
-                    "message": "Failed to fetch dealer details"}
-                )
-
+                return JsonResponse({
+                    "status": response.status_code, 
+                    "message": "Failed to fetch dealer details"
+                })
         except requests.exceptions.RequestException as e:
-            return JsonResponse(
-                {"status": 500,
+            return JsonResponse({
+                "status": 500,
                 "message": "Error connecting to the dealer service",
-                "error": str(e)}
-            )
-
+                "error": str(e)
+            })
     else:
         return JsonResponse({"status": 400, "message": "Bad Request"})
 
@@ -121,10 +119,9 @@ def add_review(request):
         data = json.loads(request.body)
         try:
             response = post_review(data)
-            return JsonResponse({"status": 200})
+            return JsonResponse({"status": response.status})
         except BaseException:
             return JsonResponse(
                 {"status": 401, "message": "Error in posting review"})
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
-
