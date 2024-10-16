@@ -112,13 +112,41 @@ def get_dealer_reviews(request, dealer_id):
         return JsonResponse({"status":400,"message":"Bad Request"})
 
 # Create a `get_dealer_details` view to render the dealer details
+# def get_dealer_details(request, dealer_id):
+#     if(dealer_id):
+#         endpoint = "/fetchDealer/"+str(dealer_id)
+#         dealership = get_request(endpoint)
+#         return JsonResponse({"status":200,"dealer":dealership})
+#     else:
+#         return JsonResponse({"status":400,"message":"Bad Request"})
+
+from django.http import JsonResponse
+import requests
+
 def get_dealer_details(request, dealer_id):
-    if(dealer_id):
-        endpoint = "/fetchDealer/"+str(dealer_id)
-        dealership = get_request(endpoint)
-        return JsonResponse({"status":200,"dealer":dealership})
+    if dealer_id:
+        try:
+            # Construct the full URL to the external API
+            base_url = "https://narayanan664-3030.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai"
+            endpoint = f"{base_url}/fetchDealer/{dealer_id}"
+            
+            # Make the request to the external API
+            response = requests.get(endpoint, timeout=10)  # Set a timeout for the request
+            
+            # Check if the response is successful
+            if response.status_code == 200:
+                dealership = response.json()
+                return JsonResponse({"status": 200, "dealer": dealership})
+            else:
+                return JsonResponse({"status": response.status_code, "message": "Failed to fetch dealer details"})
+
+        except requests.exceptions.RequestException as e:
+            # Handle possible request exceptions (timeouts, connection errors, etc.)
+            return JsonResponse({"status": 500, "message": "Error connecting to the dealer service", "error": str(e)})
+
     else:
-        return JsonResponse({"status":400,"message":"Bad Request"})
+        return JsonResponse({"status": 400, "message": "Bad Request"})
+
 
 # Create a `add_review` view to submit a review
 def add_review(request):
