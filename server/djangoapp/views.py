@@ -27,7 +27,7 @@ def login_user(request):
     return JsonResponse(data)
 
 
-def custom_logout(request):
+def logout(request):
     data = {"userName": ""}
     return JsonResponse(data)
 
@@ -119,6 +119,7 @@ def add_review(request):
         data = json.loads(request.body)
         try:
             response = post_review(data)
+            logger.info(f"Review posted successfully: {response}")
             return JsonResponse({"status": response.status})
         except BaseException:
             return JsonResponse(
